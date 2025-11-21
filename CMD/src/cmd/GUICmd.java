@@ -2,7 +2,6 @@ package cmd;
 
 import javax.swing.*;
 import javax.swing.text.*;
-
 import java.awt.*;
 
 /**
@@ -20,6 +19,10 @@ public class GUICmd {
     private JTextArea txtArea = new JTextArea();
 
     public GUICmd() {
+        initComponents();
+    }
+
+    public void initComponents() {
         JFrame JVentanaCMD = new JFrame("Administrador: Commando Prompt");
         JVentanaCMD.setSize(820, 520);
         JVentanaCMD.setLocationRelativeTo(null);
@@ -33,6 +36,13 @@ public class GUICmd {
         txtArea.setLineWrap(false);
 
         JVentanaCMD.add(new JScrollPane(txtArea), BorderLayout.CENTER);
+                
+        imprimirLinea("Microsoft Windows [Version 10.0.22621.521]");
+        imprimirLinea("(c) Microsoft Corporation. All rights reserved.");
+        imprimirLinea("");
+        imprimirPrompt();
+
+        JVentanaCMD.setVisible(true);
     }
 
     private void imprimirLinea(String linea) {
