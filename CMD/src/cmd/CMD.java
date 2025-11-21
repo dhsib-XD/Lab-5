@@ -53,6 +53,8 @@ public class CMD {
                 return fecha();
             case "time":
                 return hora();
+            case "escribir":
+                return escribir(parametro);
             case "leer":
                 return leerArchivo(parametro);
             default:
@@ -225,17 +227,30 @@ private String subir(){
       
      }
      
-     public String escribir(String nombre,String texto){
-        if (nombre == null || nombre.isBlank()) {
-            return "Comando no valido";
-        }
-        if (texto == null){
-            texto = "";
-        }
-        
+     public String escribir(String nombre, String texto) {
+        if (nombre == null || nombre.isBlank()) return "Comando no valido";
+        if (texto == null) texto = "";
+
         try (FileWriter fw = new FileWriter(new File(carpetaActual, nombre), true)) {
             fw.write(texto + "\n");
             return "Texto escrito en " + nombre;
+        } catch (IOException e) {
+            return "Error al escribir: " + e.getMessage();
+        }
+    }
+    
+     private String escribir(String parametros) {
+        if (parametros.isBlank()) return "Formato: escribir archivo.txt texto";
+
+        String[] partes = parametros.split("\\s+", 2);
+        if (partes.length < 2) return "Debe colocar archivo y texto";
+
+        String archivo = partes[0];
+        String texto = partes[1];
+
+        try (FileWriter fw = new FileWriter(new File(carpetaActual, archivo), true)) {
+            fw.write(texto + "\n");
+            return "Texto escrito en " + archivo;
         } catch (IOException e) {
             return "Error al escribir: " + e.getMessage();
         }
