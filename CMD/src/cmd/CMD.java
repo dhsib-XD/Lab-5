@@ -40,7 +40,7 @@ public class CMD {
                 return borrar(parametro);
             case "cd":
                 return mover(parametro);
-            case "...":
+            case "..":
                 return subir();
             case "dir":
                 return dir();
