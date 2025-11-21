@@ -93,10 +93,9 @@ public class CMD {
 
         File objetivo = new File(carpetaActual, nombre);
 
-        if (objetivo.exists()) {
+        if (!objetivo.exists()) {
             return "No existe";
         }
-
         return eliminarTodo(objetivo) ? "Eliminado: " + nombre
                 : "No se pudo eliminar";
     }

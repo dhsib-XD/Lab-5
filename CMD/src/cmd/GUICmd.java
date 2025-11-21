@@ -3,6 +3,7 @@ package cmd;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /**
  *
@@ -36,11 +37,53 @@ public class GUICmd {
         txtArea.setLineWrap(false);
 
         JVentanaCMD.add(new JScrollPane(txtArea), BorderLayout.CENTER);
-                
+
         imprimirLinea("Microsoft Windows [Version 10.0.22621.521]");
         imprimirLinea("(c) Microsoft Corporation. All rights reserved.");
         imprimirLinea("");
         imprimirPrompt();
+
+        ((AbstractDocument) txtArea.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void remove(FilterBypass fb, int off, int len) throws BadLocationException {
+                if (off < posPrompt) {
+                    return;
+                }
+                super.remove(fb, off, len);
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int off, int len, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                if (off < posPrompt) {
+                    return;
+                }
+                super.replace(fb, off, len, text, attrs);
+            }
+
+            @Override
+            public void insertString(FilterBypass fb, int off, String str, AttributeSet attr)
+                    throws BadLocationException {
+                if (off < posPrompt) {
+                    txtArea.setCaretPosition(txtArea.getDocument().getLength());
+                    return;
+                }
+                super.insertString(fb, off, str, attr);
+            }
+        });
+
+        txtArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_HOME) {
+                    txtArea.setCaretPosition(posPrompt);
+                    e.consume();
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    e.consume();
+                    ejecutarComando();
+                }
+            }
+        });
 
         JVentanaCMD.setVisible(true);
     }
