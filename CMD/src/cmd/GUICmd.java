@@ -29,8 +29,8 @@ public class GUICmd {
         JVentanaCMD.setLocationRelativeTo(null);
         JVentanaCMD.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JVentanaCMD.setLayout(new BorderLayout());
-
-        txtArea.setFont(new Font("Consola", Font.PLAIN, 16));
+        
+        txtArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
         txtArea.setBackground(Color.BLACK);
         txtArea.setForeground(Color.WHITE);
         txtArea.setCaretColor(Color.WHITE);
