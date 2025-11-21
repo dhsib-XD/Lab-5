@@ -130,5 +130,142 @@ public class CMD {
 
         return "Directorio no encontrado";
     }
-
+private String subir(){
+    File padre = carpetaActual.getParentFile();
+    if (padre!=null) {
+        carpetaActual = padre;
+        return"";
+        
+    }
+    
+    return "Ya estas en la raiz";
 }
+    
+    private String listar(){
+        File[]lista = carpetaActual.listFiles();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+        
+        
+        String cabecera = "\nDirectorio de: " + carpetaActual.getAbsolutePath() + "\n\n";
+        cabecera += "Modificacion            Tipo   Tamano        Nombre\n";
+        cabecera += "---------------------------------------------------------------------\n";
+
+        String salida = cabecera;
+        
+        if (lista!=null) {
+            for (File f: lista) {
+                 String fecha = formato.format(new Date(f.lastModified()));
+                String tipo = f.isDirectory() ? "<DIR>" : "FILE";
+                String tam = f.isDirectory() ? "-" : convertirTam(f.length());
+                String nombre = f.getName();
+                
+                String linea = espacio(fecha,22)+espacio(tipo,6)+espacio(tam,14)+nombre+"\n";
+
+                salida+=linea;
+
+                
+            }
+            
+        }
+        
+        return salida;
+    }
+    private String convertirTam(Long b){
+          if (b < 1024) {
+              return b + " B";
+          }
+
+          double temp = b;
+          
+          String[]unidades = {"KB","MB","GB","TB","PB"};
+          int pos =0;
+          
+          temp/= 1024.0;
+          
+          while (temp >= 1024.0 && pos < unidades.length - 1) {
+            temp /= 1024.0;
+            pos++;
+        }
+          int t=(int) Math.round(temp*10);
+        int entero = t/10;
+        int decimal = t%10;
+        
+        String numero = (decimal==0)?(""+entero):(entero+"."+decimal);
+        return numero +""+unidades[pos];
+   
+    }
+    
+    private String espacio(String txt,int ancho){
+        if (txt == null){
+            txt="";  
+        }
+        int dif = ancho - txt.length();
+          if (dif <= 0) return txt;
+
+          String esp = "";
+          for (int i = 0; i < dif; i++) {
+              esp+="";
+            
+             
+              
+        }
+           return txt + esp;
+         
+        
+    }
+    
+     private String fecha(){
+              return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+          
+            
+        }
+     
+     private String hora(){
+      return new SimpleDateFormat("HH:mm:ss").format(new Date());
+      
+     }
+     
+     public String escribir(String nombre,String texto){
+        if (nombre == null || nombre.isBlank()) {
+            return "Comando no valido";
+        }
+        if (texto == null){
+            texto = "";
+        }
+        
+        try (FileWriter fw = new FileWriter(new File(carpetaActual, nombre), true)) {
+            fw.write(texto + "\n");
+            return "Texto escrito en " + nombre;
+        } catch (IOException e) {
+            return "Error al escribir: " + e.getMessage();
+        }
+    }
+     
+     public String leerArchivo(String nombre) {
+        if (nombre == null || nombre.isBlank()) return "Comando no valido";
+
+        File archivo = new File(carpetaActual, nombre);
+        if (!archivo.exists()) return "Archivo no encontrado.";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String contenido = "";
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                contenido += linea + "\n";
+            }
+
+            return contenido;
+        } catch (IOException e) {
+            return "Error al leer: " + e.getMessage();
+        }
+    }
+
+         
+
+         
+     }
+    
+
+    
+
