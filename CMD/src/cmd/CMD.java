@@ -53,6 +53,8 @@ public class CMD {
                 return fecha();
             case "time":
                 return hora();
+            case "escribir":
+                return escribir(parametro);
             case "leer":
                 return leerArchivo(parametro);
             default:
