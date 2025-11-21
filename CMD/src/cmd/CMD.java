@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package cmd;
 
 import java.io.*;
@@ -45,7 +41,7 @@ public class CMD {
                 return borrar(parametro);
             case "cd":
                 return mover(parametro);
-            case "..":
+            case "...":
                 return subir();
             case "dir":
                 return listar();
